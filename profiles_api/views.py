@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from.django.http import HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -11,8 +11,10 @@ from . serializers import employeeSerializer
 # Create your views here.
 class employeeList(APIView):
   
-  def get(self):
-    pass
+  def get(self, request):
+    varemployee = employee.objects.all()
+    serializer = employeeSerializer(varemployee, many=True)
+    return Response(serializer.data)
 
   def post(self):
     pass
