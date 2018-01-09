@@ -1,9 +1,9 @@
 from django.shortcuts import render
 
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from . models import employee
 from . serializers import employeeSerializer
@@ -12,9 +12,33 @@ from . serializers import employeeSerializer
 class employeeList(APIView):
   
   def get(self, request):
+    """ Get the employee details """
     varemployee = employee.objects.all()
     serializer = employeeSerializer(varemployee, many=True)
     return Response(serializer.data)
 
-  def post(self):
-    pass
+  def post(self, request):
+    """ Post new Employees """
+    serializer = employeeSerializer(data=request.data)
+
+    if serializer.is_valid():
+      name = serializer.data.get('firstname')
+      message = 'Hello {0}'.format(name)
+      return Response({'message' : message})
+    else:
+      return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+  def put(self, request, pk=None):
+    """ Handles updating an object """
+
+    return Response({'method': 'put'})
+
+  def patch(self, request, pk=None):
+    """ Only updates fields provided in the request, Partial update """
+
+    return Response({'method': 'patch'})
+
+  def delete(self, request, pk=None):
+    """Deletes an object """
+
+    return Response({'method': 'delete'})
