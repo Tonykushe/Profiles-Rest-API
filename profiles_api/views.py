@@ -1,5 +1,6 @@
 from django.shortcuts import render
 
+from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import HttpResponse
@@ -42,3 +43,11 @@ class employeeList(APIView):
     """Deletes an object """
 
     return Response({'method': 'delete'})
+
+class EmployeeViewSet(viewsets.ViewSet):
+  
+  def list(self, request):
+    """ Get the employee list """
+    varemployee = employee.objects.all()
+    serializer = employeeSerializer(varemployee, many=True)
+    return Response(serializer.data)
